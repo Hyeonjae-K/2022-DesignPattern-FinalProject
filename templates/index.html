@@ -1,31 +1,170 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<title>todo</title>
+<style>
+  #content {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+</style>
 {% endblock %}
 
 {% block body %}
-{% if tasks|length < 1 %}
-<h4>There are no tasks. Create one below!</h4>
-{% else %}
-<table>
-  <tr>
-    <th>Task</th>
-    <th>Actions</th>
-  </tr>
-  {% for task in tasks %}
-  <tr>
-    <td>{{ task.content }}</td>
-    <td>
-      <a href="delete/{{task.id}}">Delete</a><br>
-      <a href="update/{{task.id}}">Update</a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
+<div class="container">
+  <div class="row my-5">
+    <!-- Do First -->
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header">
+          Do
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-success align-middle m-0">
+            <thead>
+              <tr>
+                <th scope="col">Task</th>
+                <th scope="col" style="width: 120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for do in dos %}
+              <tr>
+                <td>{{ do[1] }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm" href="update/do/{{do[0]}}" role="button">수정</a>
+                  <a class="btn btn-danger btn-sm" href="delete/do/{{do[0]}}" role="button">삭제</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-muted">
+          <form action="/create/do" method="POST">
+            <div class="input-group">
+              <input type="text" class="form-control" name="content" id="content" style="background-color: rgba(255, 255, 255, 0.1);">
+              <button class="btn btn-outline-success" type="submit" id="button-addon2">추가</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
-<form action="/" method="POST">
-  <input type="text" name="content" id="content">
-  <input type="submit" value="Add Task">
-</form>
+    <!-- Schedule -->
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header">
+          Schedule
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-info align-middle m-0">
+            <thead>
+              <tr>
+                <th scope="col">Task</th>
+                <th scope="col" style="width: 120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for schedule in schedules %}
+              <tr>
+                <td>{{ schedule[1] }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm" href="update/schedule/{{schedule[0]}}" role="button">수정</a>
+                  <a class="btn btn-danger btn-sm" href="delete/schedule/{{schedule[0]}}" role="button">삭제</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-muted">
+          <form action="/create/schedule" method="POST">
+            <div class="input-group">
+              <input type="text" class="form-control" name="content" id="content" style="background-color: rgba(255, 255, 255, 0.1);">
+              <button class="btn btn-outline-info" type="submit" id="button-addon2">추가</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-5">
+    <!-- Delegate -->
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header">
+          Delegate
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-warning align-middle m-0">
+            <thead>
+              <tr>
+                <th scope="col">Task</th>
+                <th scope="col" style="width: 120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for delegate in delegates %}
+              <tr>
+                <td>{{ delegate[1] }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm" href="update/delegate/{{delegate[0]}}" role="button">수정</a>
+                  <a class="btn btn-danger btn-sm" href="delete/delegate/{{delegate[0]}}" role="button">삭제</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-muted">
+          <form action="/create/delegate" method="POST">
+            <div class="input-group">
+              <input type="text" class="form-control" name="content" id="content" style="background-color: rgba(255, 255, 255, 0.1);">
+              <button class="btn btn-outline-warning" type="submit" id="button-addon2">추가</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Don't Do -->
+    <div class="col">
+      <div class="card text-center">
+        <div class="card-header">
+          Delete
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-danger align-middle m-0">
+            <thead>
+              <tr>
+                <th scope="col">Task</th>
+                <th scope="col" style="width: 120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dontdo in dontdos %}
+              <tr>
+                <td>{{ dontdo[1] }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm" href="update/dontdo/{{dontdo[0]}}" role="button">수정</a>
+                  <a class="btn btn-danger btn-sm" href="delete/dontdo/{{dontdo[0]}}" role="button">삭제</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-muted">
+          <form action="/create/dontdo" method="POST">
+            <div class="input-group">
+              <input type="text" class="form-control" name="content" id="content" style="background-color: rgba(255, 255, 255, 0.1);">
+              <button class="btn btn-outline-danger" type="submit" id="button-addon2">추가</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
